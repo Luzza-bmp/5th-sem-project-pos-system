@@ -6,7 +6,8 @@ from sqlalchemy import pool
 from alembic import context
 
 from app.config import settings
-from app.database import Base, engine
+from app.database import Base
+from sqlalchemy import create_engine
 import app.models  # Import all models so Alembic can discover them
 
 
@@ -24,7 +25,7 @@ def run_migrations_offline() -> None:
     """Run migrations without creating a database connection."""
 
     context.configure(
-        url=settings.DATABASE_URL,
+        url=settings.MIGRATION_DATABASE_URL,
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
@@ -35,9 +36,14 @@ def run_migrations_offline() -> None:
 
 
 def run_migrations_online() -> None:
-    """Run migrations using a live database connection."""
+    """Run migrations using a privileged database connection."""
 
-    with engine.connect() as connection:
+    migration_engine = create_engine(
+        settings.MIGRATION_DATABASE_URL,
+        poolclass=pool.NullPool,
+    )
+
+    with migration_engine.connect() as connection:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
@@ -46,6 +52,8 @@ def run_migrations_online() -> None:
 
         with context.begin_transaction():
             context.run_migrations()
+
+    migration_engine.dispose()
 
 
 if context.is_offline_mode():
