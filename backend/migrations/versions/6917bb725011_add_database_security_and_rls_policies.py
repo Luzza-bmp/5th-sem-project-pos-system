@@ -205,10 +205,7 @@ def upgrade() -> None:
             text
         ) FROM PUBLIC
     """)
-    op.execute("""
-        REVOKE ALL ON FUNCTION public.rls_auto_enable()
-        FROM PUBLIC
-    """)
+
     # 8. Function execution permissions.
     op.execute("""
         GRANT EXECUTE ON FUNCTION public.current_app_user_id()
@@ -596,6 +593,11 @@ def upgrade() -> None:
     op.execute(
         "ALTER FUNCTION public.rls_auto_enable() OWNER TO postgres"
     )
+
+    op.execute("""
+        REVOKE ALL ON FUNCTION public.rls_auto_enable()
+        FROM PUBLIC
+    """)
 
     # Replace the existing trigger if this is the already-configured DB.
     op.execute("DROP EVENT TRIGGER IF EXISTS ensure_rls")
