@@ -1,4 +1,4 @@
-
+#this init file exists for import app.models
 from app.models.user import User
 from app.models.store import Store
 from app.models.member import Member
