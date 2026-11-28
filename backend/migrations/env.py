@@ -1,13 +1,13 @@
 
-from logging.config import fileConfig
+from logging.config import fileConfig #Configures logging for Alembic.
 
-from sqlalchemy import pool
+from sqlalchemy import pool #A connection pool is a cache of open, reusable database connections kept ready so your application does not pay the cost of opening a brand-new connection on every query or request.
 
 from alembic import context #	Gives access to Alembic's migration execution environment.
 
 from app.config import settings
 from app.database import Base
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine #	Creates the database engine used by migrations.
 import app.models  # Import all models so Alembic can discover them
 
 
@@ -18,7 +18,7 @@ if config.config_file_name is not None:
 
 
 #Base.metadata tells Alembic where our SQLAlchemy models are registered.
-target_metadata = Base.metadata 
+target_metadata = Base.metadata  #It hands Alembic the blueprint of what your tables should look like in code so Alembic can compare them against what actually exists in PostgreSQL.
 
 
 def run_migrations_offline() -> None: 
