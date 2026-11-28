@@ -1,7 +1,3 @@
-
--- Pasaley PostgreSQL role bootstrap
--- Run using the Supabase project database owner.
-
 DO $$
 BEGIN
     IF NOT EXISTS (
@@ -11,9 +7,7 @@ BEGIN
     END IF;
 END
 $$;
-"""pasaley_app: a login identity used by the backend, with restricted permissions.
 
-pasaley_provisioner: a non-login role intended to hold specific privileged permissions for provisioning stores."""
 DO $$
 BEGIN
     IF NOT EXISTS (
@@ -23,23 +17,3 @@ BEGIN
     END IF;
 END
 $$;
-
--- 3. Enforce the intended security attributes.
-
-ALTER ROLE pasaley_app
-    LOGIN
-    NOSUPERUSER
-    NOCREATEDB
-    NOCREATEROLE
-    NOREPLICATION
-    NOBYPASSRLS
-    NOINHERIT;
-
-ALTER ROLE pasaley_provisioner
-    NOLOGIN
-    NOSUPERUSER
-    NOCREATEDB
-    NOCREATEROLE
-    NOREPLICATION
-    NOBYPASSRLS
-    INHERIT;
