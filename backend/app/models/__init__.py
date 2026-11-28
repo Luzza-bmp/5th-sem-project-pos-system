@@ -10,6 +10,8 @@ from app.models.payment import Payment
 from app.models.stock_movement import StockMovement
 from app.models.restock_batch import RestockBatch
 from app.models.restock_line import RestockLine
+from app.models.auth_token import AuthToken
+from app.models.auth_session import AuthSession
 
 
 __all__ = [
@@ -24,4 +26,6 @@ __all__ = [
     "StockMovement",
     "RestockBatch",
     "RestockLine",
+    "AuthToken",
+    "AuthSession",
 ]

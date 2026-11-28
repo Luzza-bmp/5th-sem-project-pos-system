@@ -11,6 +11,20 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     DATABASE_URL: str
     MIGRATION_DATABASE_URL: str | None = None
+    # Optional here so Alembic can load DB settings without API-only secrets.
+    # The API entry point validates this before it starts serving requests.
+    JWT_SECRET_KEY: str | None = None
+    JWT_ISSUER: str = "pasaley-api"
+    ACCESS_TOKEN_MINUTES: int = 15
+    REFRESH_TOKEN_DAYS: int = 30
+    FRONTEND_URL: str = "http://localhost:3000"
+    SMTP_HOST: str | None = None
+    SMTP_PORT: int = 587
+    SMTP_USER: str | None = None
+    SMTP_PASSWORD: str | None = None
+    SMTP_FROM_EMAIL: str = "noreply@example.com"
+    SMTP_USE_TLS: bool = True
+    APP_ENV: str = "development"
 
     model_config = SettingsConfigDict(
         env_file=".env", #tells Pydantic Settings to read the .env file.

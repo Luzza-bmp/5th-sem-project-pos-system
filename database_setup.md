@@ -148,7 +148,7 @@ FROM alembic_version;
 The expected current migration revision is:
 
 ```text
-6917bb725011
+c1a7496f22a1
 ```
 
 Verify Row Level Security:
@@ -161,12 +161,18 @@ WHERE schemaname = 'public'
       'stores', 'users', 'members', 'invites',
       'invoices', 'products', 'restock_batches',
       'restock_lines', 'items', 'payments',
-      'stock_movements'
+  'stock_movements', 'auth_tokens', 'auth_sessions'
   )
 ORDER BY tablename;
 ```
 
 All 11 application tables should show `rowsecurity = true`.
+
+## 11. Authentication configuration
+
+Add `JWT_SECRET_KEY` to `backend/.env` (generate a fresh random value with `python -c "import secrets; print(secrets.token_urlsafe(48))"`). Never commit `.env`. For development, verification and reset links print in the backend terminal. For real email delivery, set `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM_EMAIL`, and `SMTP_USE_TLS` using credentials from your email provider. Do not use a personal mailbox password.
+
+The migrations add auth sessions and one-time password-reset records. Auth records store only token digests. Run `alembic upgrade head` again after pulling the migrations.
 
 ## 10. Important Team Rules
 
